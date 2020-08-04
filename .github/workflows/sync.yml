@@ -1,0 +1,40 @@
+name: Run main sync script
+
+on:
+  push:
+    branches: [ master ]
+  schedule:
+  - cron: "30 * * * *"
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  sync:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 14
+
+    - name: Install native dependencies for nodegit
+      run: sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+      run: sudo apt-get update
+      run: sudo apt-get install -y libstdc++-4.9-dev
+
+    - name: Install node dependencies
+      run: npm i
+
+    - name: Run main sync script
+      run: npm run start
+      env:
+        GITLAB_USERNAME: ${{secrets.GITLAB_USERNAME}}
+        GIT_USERNAME: ${{secrets.GIT_USERNAME}}
+        GIT_EMAIL: ${{secrets.GIT_EMAIL}}
+        FAKE_COMMITS_REPO_URL: ${{secrets.FAKE_COMMITS_REPO_URL}}
+        FAKE_COMMITS_REPO_DEPLOY_KEY_PUBLIC: ${{secrets.FAKE_COMMITS_REPO_DEPLOY_KEY_PUBLIC}}
+        FAKE_COMMITS_REPO_DEPLOY_KEY_PRIVATE: ${{secrets.FAKE_COMMITS_REPO_DEPLOY_KEY_PRIVATE}}
