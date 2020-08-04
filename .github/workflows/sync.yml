@@ -22,9 +22,7 @@ jobs:
         node-version: 14
 
     - name: Install native dependencies for nodegit
-      run: sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-      run: sudo apt-get update
-      run: sudo apt-get install -y libstdc++-4.9-dev
+      run: sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get install -y libstdc++-4.9-dev
 
     - name: Install node dependencies
       run: npm i
