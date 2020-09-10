@@ -4,7 +4,7 @@ on:
   push:
     branches: [ master ]
   schedule:
-  - cron: "30 * * * *"
+  - cron: "22 0/8 * * *"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
